@@ -37,17 +37,16 @@ public:
     void paint (Graphics& g) override;
     void resized() override;
     
+    //==============================================================================
     void mouseEnter (const MouseEvent &event) override;
     void mouseExit (const MouseEvent &event) override;
-
-    //==============================================================================
     void buttonClicked (Button* button) override;
 
 private:
     //==============================================================================
     // Your private member variables go here...
     Random mRandom;
-    Colour mColour {Colours::crimson};
+    Colour mColour {Colours::black};
     
     BpmSlider mBpmSlider;
     BpmLabel mBpmLabel;

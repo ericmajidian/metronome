@@ -11,6 +11,8 @@
 //==============================================================================
 MainComponent::MainComponent()
 {
+    mColour = Colour (mRandom.nextFloat(), 1.0f, 0.8f, 1.0f);
+
     addAndMakeVisible (mBpmLabel);
     addAndMakeVisible (mMinusButton);
     addAndMakeVisible (mPlusButton);
@@ -136,6 +138,7 @@ void MainComponent::resized()
     mBpmLabel.setBounds (labelBounds);
 }
 
+//==============================================================================
 void MainComponent::mouseEnter (const MouseEvent &event)
 {
     // Expand buttons on hover.
@@ -164,7 +167,6 @@ void MainComponent::mouseExit (const MouseEvent &event)
     }
 }
 
-//==============================================================================
 void MainComponent::buttonClicked (Button* button)
 {
     if (button == &mMinusButton)
