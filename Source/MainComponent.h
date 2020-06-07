@@ -54,6 +54,10 @@ private:
     MinusButton mMinusButton;
     PlusButton mPlusButton;
     PlayButton mPlayButton;
+    
+    WavAudioFormat wavAudioFormat;
+    std::unique_ptr<AudioFormatReaderSource> readerSource;
+    AudioTransportSource transportSource;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

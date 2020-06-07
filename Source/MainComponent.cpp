@@ -18,13 +18,19 @@ MainComponent::MainComponent()
     addAndMakeVisible (mBpmSlider);
 
     mBpmLabel.setSlider (&mBpmSlider);
+    
     mBpmSlider.setThumbColour (mColour);
     mBpmSlider.addListener (&mBpmLabel);
+    
     mMinusButton.addListener (this);
     mMinusButton.addMouseListener (this, false);
+    
     mPlusButton.addListener (this);
     mPlusButton.addMouseListener (this, false);
+    
+    mPlayButton.addListener (this);
     mPlayButton.addMouseListener (this, false);
+    mPlayButton.setEnabled (false);
 
     // Make sure you set the size of the component after
     // you add any child components.
@@ -60,6 +66,17 @@ void MainComponent::prepareToPlay (int samplesPerBlockExpected, double sampleRat
     // but be careful - it will be called on the audio thread, not the GUI thread.
 
     // For more details, see the help for AudioProcessor::prepareToPlay()
+    transportSource.prepareToPlay (samplesPerBlockExpected, sampleRate);
+    
+    auto* reader = wavAudioFormat.createReaderFor (new MemoryInputStream (BinaryData::WoodBlock_wav, BinaryData::WoodBlock_wavSize, false), true);
+    
+    if (reader != nullptr)
+    {
+        std::unique_ptr<AudioFormatReaderSource> newSource (new AudioFormatReaderSource (reader, true));
+        transportSource.setSource (newSource.get(), 0, nullptr, reader->sampleRate);
+        mPlayButton.setEnabled (true);
+        readerSource.reset (newSource.release());
+    }
 }
 
 void MainComponent::getNextAudioBlock (const AudioSourceChannelInfo& bufferToFill)
@@ -67,10 +84,13 @@ void MainComponent::getNextAudioBlock (const AudioSourceChannelInfo& bufferToFil
     // Your audio-processing code goes here!
 
     // For more details, see the help for AudioProcessor::getNextAudioBlock()
-
-    // Right now we are not producing any data, in which case we need to clear the buffer
-    // (to prevent the output of random noise)
-    bufferToFill.clearActiveBufferRegion();
+    if (readerSource.get() == nullptr)
+    {
+        bufferToFill.clearActiveBufferRegion();
+        return;
+    }
+    
+    transportSource.getNextAudioBlock (bufferToFill);
 }
 
 void MainComponent::releaseResources()
@@ -79,6 +99,7 @@ void MainComponent::releaseResources()
     // restarted due to a setting change.
 
     // For more details, see the help for AudioProcessor::releaseResources()
+    transportSource.releaseResources();
 }
 
 //==============================================================================
@@ -117,9 +138,11 @@ void MainComponent::resized()
 
 void MainComponent::mouseEnter (const MouseEvent &event)
 {
-    if (event.eventComponent == &mPlusButton ||
+    // Expand buttons on hover.
+    if (event.eventComponent->isEnabled() &&
+        (event.eventComponent == &mPlusButton ||
         event.eventComponent == &mMinusButton ||
-        event.eventComponent == &mPlayButton)
+        event.eventComponent == &mPlayButton))
     {
         auto bounds = event.eventComponent->getBounds();
         bounds.expand (2, 2);
@@ -129,9 +152,11 @@ void MainComponent::mouseEnter (const MouseEvent &event)
 
 void MainComponent::mouseExit (const MouseEvent &event)
 {
-    if (event.eventComponent == &mPlusButton ||
+    // Reduce buttons when mouse is no longer hovering.
+    if (event.eventComponent->isEnabled() &&
+        (event.eventComponent == &mPlusButton ||
         event.eventComponent == &mMinusButton ||
-        event.eventComponent == &mPlayButton)
+        event.eventComponent == &mPlayButton))
     {
         auto bounds = event.eventComponent->getBounds();
         bounds.reduce (2, 2);
@@ -143,7 +168,23 @@ void MainComponent::mouseExit (const MouseEvent &event)
 void MainComponent::buttonClicked (Button* button)
 {
     if (button == &mMinusButton)
+    {
         mBpmSlider.setValue (mBpmSlider.getValue() - 1);
+    }
     else if (button == &mPlusButton)
+    {
         mBpmSlider.setValue (mBpmSlider.getValue() + 1);
+    }
+    else if (button == &mPlayButton)
+    {
+        if (button->getToggleState())
+        {
+            transportSource.start();
+        }
+        else
+        {
+            transportSource.stop();
+            transportSource.setPosition (0.0);
+        }
+    }
 }
