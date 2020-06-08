@@ -14,6 +14,7 @@
 #include "Gui/MinusButton.h"
 #include "Gui/PlusButton.h"
 #include "Gui/PlayButton.h"
+#include "Metronome.h"
 
 //==============================================================================
 /*
@@ -54,9 +55,7 @@ private:
     PlusButton mPlusButton;
     PlayButton mPlayButton;
     
-    WavAudioFormat wavAudioFormat;
-    std::unique_ptr<AudioFormatReaderSource> readerSource;
-    AudioTransportSource transportSource;
+    Metronome mMetronome;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

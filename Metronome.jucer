@@ -20,9 +20,11 @@
         <FILE id="IWltZP" name="PlusButton.cpp" compile="1" resource="0" file="Source/Gui/PlusButton.cpp"/>
         <FILE id="ZRrfLU" name="PlusButton.h" compile="0" resource="0" file="Source/Gui/PlusButton.h"/>
       </GROUP>
-      <FILE id="iTtcgZ" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
+      <FILE id="vOQyds" name="Metronome.cpp" compile="1" resource="0" file="Source/Metronome.cpp"/>
+      <FILE id="wQTaOe" name="Metronome.h" compile="0" resource="0" file="Source/Metronome.h"/>
       <FILE id="Yhfih9" name="MainComponent.cpp" compile="1" resource="0"
             file="Source/MainComponent.cpp"/>
+      <FILE id="iTtcgZ" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
       <FILE id="kFRSTP" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
     </GROUP>
   </MAINGROUP>

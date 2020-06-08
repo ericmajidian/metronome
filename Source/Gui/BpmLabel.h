@@ -26,7 +26,7 @@ public:
     {
         Font font ( Typeface::createSystemTypefaceFor (BinaryData::UbuntuRegular_ttf,
                                                        BinaryData::UbuntuRegular_ttfSize));
-        font.setHeight (40);
+        font.setHeight (42);  // answer here
         return font;
     }
 };

@@ -68,17 +68,8 @@ void MainComponent::prepareToPlay (int samplesPerBlockExpected, double sampleRat
     // but be careful - it will be called on the audio thread, not the GUI thread.
 
     // For more details, see the help for AudioProcessor::prepareToPlay()
-    transportSource.prepareToPlay (samplesPerBlockExpected, sampleRate);
-    
-    auto* reader = wavAudioFormat.createReaderFor (new MemoryInputStream (BinaryData::WoodBlock_wav, BinaryData::WoodBlock_wavSize, false), true);
-    
-    if (reader != nullptr)
-    {
-        std::unique_ptr<AudioFormatReaderSource> newSource (new AudioFormatReaderSource (reader, true));
-        transportSource.setSource (newSource.get(), 0, nullptr, reader->sampleRate);
-        mPlayButton.setEnabled (true);
-        readerSource.reset (newSource.release());
-    }
+    mMetronome.prepareToPlay (sampleRate, 120);
+    mPlayButton.setEnabled (true);
 }
 
 void MainComponent::getNextAudioBlock (const AudioSourceChannelInfo& bufferToFill)
@@ -86,13 +77,7 @@ void MainComponent::getNextAudioBlock (const AudioSourceChannelInfo& bufferToFil
     // Your audio-processing code goes here!
 
     // For more details, see the help for AudioProcessor::getNextAudioBlock()
-    if (readerSource.get() == nullptr)
-    {
-        bufferToFill.clearActiveBufferRegion();
-        return;
-    }
-    
-    transportSource.getNextAudioBlock (bufferToFill);
+    mMetronome.getNextAudioBlock (bufferToFill);
 }
 
 void MainComponent::releaseResources()
@@ -101,7 +86,6 @@ void MainComponent::releaseResources()
     // restarted due to a setting change.
 
     // For more details, see the help for AudioProcessor::releaseResources()
-    transportSource.releaseResources();
 }
 
 //==============================================================================
@@ -176,17 +160,5 @@ void MainComponent::buttonClicked (Button* button)
     else if (button == &mPlusButton)
     {
         mBpmSlider.setValue (mBpmSlider.getValue() + 1);
-    }
-    else if (button == &mPlayButton)
-    {
-        if (button->getToggleState())
-        {
-            transportSource.start();
-        }
-        else
-        {
-            transportSource.stop();
-            transportSource.setPosition (0.0);
-        }
     }
 }
