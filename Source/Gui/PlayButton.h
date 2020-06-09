@@ -18,6 +18,10 @@ public:
     void drawToggleButton (Graphics& g, ToggleButton& button, bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown)
     {
         auto bounds = button.getLocalBounds();
+        
+        if (shouldDrawButtonAsDown)
+            bounds.reduce (2, 2);
+        
         bounds.reduce (8, 8);
         g.drawEllipse (bounds.toFloat(), 8);
         
