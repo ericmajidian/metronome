@@ -23,6 +23,7 @@ MainComponent::MainComponent()
     
     mBpmSlider.setThumbColour (mColour);
     mBpmSlider.addListener (&mBpmLabel);
+    mBpmSlider.addListener (this);
     
     mMinusButton.addListener (this);
     mMinusButton.addMouseListener (this, false);
@@ -68,6 +69,7 @@ void MainComponent::prepareToPlay (int samplesPerBlockExpected, double sampleRat
     // but be careful - it will be called on the audio thread, not the GUI thread.
 
     // For more details, see the help for AudioProcessor::prepareToPlay()
+    mSampleRate = sampleRate;
     mMetronome.prepareToPlay (sampleRate, 120);
     mPlayButton.setEnabled (true);
 }
@@ -125,7 +127,6 @@ void MainComponent::resized()
 //==============================================================================
 void MainComponent::mouseEnter (const MouseEvent &event)
 {
-    // Expand buttons on hover.
     if (event.eventComponent->isEnabled() &&
         (event.eventComponent == &mPlusButton ||
         event.eventComponent == &mMinusButton ||
@@ -139,7 +140,6 @@ void MainComponent::mouseEnter (const MouseEvent &event)
 
 void MainComponent::mouseExit (const MouseEvent &event)
 {
-    // Reduce buttons when mouse is no longer hovering.
     if (event.eventComponent->isEnabled() &&
         (event.eventComponent == &mPlusButton ||
         event.eventComponent == &mMinusButton ||
@@ -151,14 +151,38 @@ void MainComponent::mouseExit (const MouseEvent &event)
     }
 }
 
+void MainComponent::sliderValueChanged (Slider*)
+{
+    mMetronome.pause();
+    startTimer (1000);
+}
+
 void MainComponent::buttonClicked (Button* button)
 {
     if (button == &mMinusButton)
     {
         mBpmSlider.setValue (mBpmSlider.getValue() - 1);
+        mMetronome.pause();
+        startTimer (1000);
     }
     else if (button == &mPlusButton)
     {
         mBpmSlider.setValue (mBpmSlider.getValue() + 1);
+        mMetronome.pause();
+        startTimer (1000);
     }
+    else if (button == &mPlayButton)
+    {
+        if (button->getToggleState())
+            mMetronome.start();
+        else
+            mMetronome.stop();
+    }
+}
+
+void MainComponent::timerCallback()
+{
+    stopTimer();
+    mMetronome.unpause();
+    mMetronome.prepareToPlay (mSampleRate, mBpmSlider.getValue());
 }

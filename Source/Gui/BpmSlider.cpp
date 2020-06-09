@@ -14,7 +14,7 @@ BpmSlider::BpmSlider()
 {
     setSliderStyle (Slider::LinearVertical);
     setRange (40.0, 218.0, 1.0);
-    setValue (120.0);
+    setValue (120.0, NotificationType::dontSendNotification);
     setTextBoxStyle (Slider::NoTextBox, false, 0, 0);
     setColour (Slider::trackColourId, Colours::black);
     setLookAndFeel (&mBpmSliderLookAndFeel);

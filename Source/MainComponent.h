@@ -22,7 +22,9 @@
     your controls and content.
 */
 class MainComponent   : public AudioAppComponent,
-                        public Button::Listener
+                        public Slider::Listener,
+                        public Button::Listener,
+                        public Timer
 {
 public:
     //==============================================================================
@@ -41,11 +43,11 @@ public:
     //==============================================================================
     void mouseEnter (const MouseEvent &event) override;
     void mouseExit (const MouseEvent &event) override;
+    void sliderValueChanged (Slider*) override;
     void buttonClicked (Button* button) override;
+    void timerCallback() override;
 
 private:
-    //==============================================================================
-    // Your private member variables go here...
     Random mRandom;
     Colour mColour {Colours::black};
     
@@ -56,6 +58,8 @@ private:
     PlayButton mPlayButton;
     
     Metronome mMetronome;
+    
+    double mSampleRate {44100};
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };
