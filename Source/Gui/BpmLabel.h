@@ -15,18 +15,11 @@
 class BpmLabelLookAndFeel : public LookAndFeel_V4
 {
 public:
-    Label* createSliderTextBox (Slider& slider) override
-    {
-        Label* l = LookAndFeel_V4::createSliderTextBox (slider);
-        l->setColour (Label::outlineColourId, Colours::transparentBlack);
-        return l;
-    }
-    
     Font getLabelFont (Label &) override
     {
         Font font ( Typeface::createSystemTypefaceFor (BinaryData::OxygenRegular_ttf,
                                                        BinaryData::OxygenRegular_ttfSize));
-        font.setHeight (42);  // answer here
+        font.setHeight (48);
         return font;
     }
 };
