@@ -3,9 +3,9 @@
 <JUCERPROJECT id="dawVeM" name="Metronome" projectType="guiapp" jucerVersion="5.4.7">
   <MAINGROUP id="S57jC7" name="Metronome">
     <GROUP id="{55BCD3E8-7BB0-3A5F-D705-82CB5E6B5977}" name="Res">
+      <FILE id="i9yrED" name="Oxygen-Regular.ttf" compile="0" resource="1"
+            file="../../Downloads/Oxygen/Oxygen-Regular.ttf"/>
       <FILE id="WcDqK5" name="WoodBlock.wav" compile="0" resource="1" file="Res/WoodBlock.wav"/>
-      <FILE id="IAHTG4" name="Ubuntu-Regular.ttf" compile="0" resource="1"
-            file="Res/Ubuntu-Regular.ttf"/>
     </GROUP>
     <GROUP id="{BC3963E4-5A4C-86F1-33F6-388A1AC6F11D}" name="Source">
       <GROUP id="{EBA58CB0-D477-CA0A-D816-62A27CCF58EB}" name="Gui">

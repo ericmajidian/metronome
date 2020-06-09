@@ -24,8 +24,8 @@ public:
     
     Font getLabelFont (Label &) override
     {
-        Font font ( Typeface::createSystemTypefaceFor (BinaryData::UbuntuRegular_ttf,
-                                                       BinaryData::UbuntuRegular_ttfSize));
+        Font font ( Typeface::createSystemTypefaceFor (BinaryData::OxygenRegular_ttf,
+                                                       BinaryData::OxygenRegular_ttfSize));
         font.setHeight (42);  // answer here
         return font;
     }

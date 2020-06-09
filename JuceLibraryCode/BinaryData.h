@@ -8,11 +8,11 @@
 
 namespace BinaryData
 {
+    extern const char*   OxygenRegular_ttf;
+    const int            OxygenRegular_ttfSize = 46440;
+
     extern const char*   WoodBlock_wav;
     const int            WoodBlock_wavSize = 23190;
-
-    extern const char*   UbuntuRegular_ttf;
-    const int            UbuntuRegular_ttfSize = 298928;
 
     // Number of elements in the namedResourceList and originalFileNames arrays.
     const int namedResourceListSize = 2;
